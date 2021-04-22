@@ -17,9 +17,9 @@ class Add < Struct.new(:left, :right)
 
   def reduce(environment)
     if left.reducible?
-      [Add.new(left.reduce(environment), right), environment]
+      Add.new(left.reduce(environment), right)
     elsif right.reducible?
-      [Add.new(left, right.reduce(environment)), environment]
+      Add.new(left, right.reduce(environment))
     else
       Number.new(left.value + right.value)
     end
@@ -42,9 +42,9 @@ class Multiply < Struct.new(:left, :right)
 
   def reduce(environment)
     if left.reducible?
-      [Multiply.new(left.reduce(environment), right), environment]
+      Multiply.new(left.reduce(environment), right)
     elsif right.reducible?
-      [Multiply.new(left, right.reduce(environment)), environment]
+      Multiply.new(left, right.reduce(environment))
     else
       Number.new(left.value * right.value) #??
     end
@@ -166,7 +166,13 @@ end
 class Machine < Struct.new(:statement, :environment)
 
   def step
-    self.statement, self.environment = statement.reduce(environment)
+    # puts "DEBUG: #{statement}, #{environment}, #{statement.class}"
+    if statement.instance_of?(Assign)
+      self.statement, self.environment = statement.reduce(environment)
+    else
+      self.statement = statement.reduce(environment)
+    end
+    # puts "DEBUG: #{statement}, #{environment}, #{statement.class}"
   end
 
   def run
