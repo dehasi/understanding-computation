@@ -14,4 +14,12 @@ class Ch2Test < Test::Unit::TestCase
 
     assert_equal exp.to_s, '1 * 2 + 3 * 4'
   end
+
+  def test_reduce
+    exp = Add.new(
+      Multiply.new(Number.new(1), Number.new(2)),
+      Multiply.new(Number.new(3), Number.new(4)))
+
+    assert_equal exp.reduce, 13
+  end
 end

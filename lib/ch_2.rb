@@ -9,11 +9,21 @@ class Number < Struct.new(:value)
   end
 
   def inspect
-    "«#{self}»"
+    "\"#{self}\""
   end
 end
 
 class Add < Struct.new(:left, :right)
+
+  def reduce
+    if left.reducible?
+      Add.new(left.reduce, right)
+    elsif right.reducible?
+      Add.new(left, right.reduce)
+    else
+      Number.new(left.value + right.value)
+    end
+  end
 
   def reducible?
     true
@@ -29,6 +39,16 @@ class Add < Struct.new(:left, :right)
 end
 
 class Multiply < Struct.new(:left, :right)
+
+  def reduce
+    if left.reducible?
+      Add.new(left.reduce, right)
+    elsif right.reducible?
+      Add.new(left, right.reduce)
+    else
+      Number.new(left.value * right.value)
+    end
+  end
 
   def reducible?
     true
