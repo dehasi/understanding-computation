@@ -31,4 +31,13 @@ class Ch2Test < Test::Unit::TestCase
 
     assert_false result.value
   end
+
+  def test_machine_run_variable
+    result = Machine.new(
+      Add.new(Variable.new(:x), Variable.new(:y)),
+      { x: Number.new(3), y: Number.new(4) }
+    ).run
+
+    assert_equal 7, result.value
+  end
 end
