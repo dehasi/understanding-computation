@@ -40,4 +40,12 @@ class Ch2Test < Test::Unit::TestCase
 
     assert_equal 7, result.value
   end
+
+  def test_assignment
+    result = Machine.new(
+      Assign.new(:x, Add.new(Variable.new(:x), Number.new(1))), { x: Number.new(2) }
+    ).run
+
+    assert  result.instance_of? DoNothing
+  end
 end
