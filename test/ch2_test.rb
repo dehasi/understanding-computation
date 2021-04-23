@@ -49,12 +49,21 @@ class Ch2Test < Test::Unit::TestCase
     assert result.instance_of? DoNothing
   end
 
-  def test_if
+  def test_if_else
     result = Machine.new(If.new(
       Variable.new(:x),
       Assign.new(:y, Number.new(1)),
       Assign.new(:y, Number.new(2))
     ), { x: Boolean.new(true) }
+    ).run
+
+    assert result.instance_of? DoNothing
+  end
+
+  def test_if_only
+    result = Machine.new(
+      If.new(Variable.new(:x), Assign.new(:y, Number.new(1)), DoNothing.new),
+      { x: Boolean.new(false) }
     ).run
 
     assert result.instance_of? DoNothing
