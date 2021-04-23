@@ -68,4 +68,16 @@ class Ch2Test < Test::Unit::TestCase
 
     assert result.instance_of? DoNothing
   end
+
+  def test_sequence
+    result = Machine.new(
+      Sequence.new(
+        Assign.new(:x, Add.new(Number.new(1), Number.new(1))),
+        Assign.new(:y, Add.new(Variable.new(:x), Number.new(3)))
+      ),
+      {}
+    ).run
+
+    assert result.instance_of? DoNothing
+  end
 end

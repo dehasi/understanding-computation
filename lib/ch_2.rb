@@ -191,11 +191,38 @@ class If < Struct.new(:condition, :consequence, :alternative)
   end
 end
 
+class Sequence < Struct.new(:first, :second)
+
+  def reduce(environment)
+    case first
+    when DoNothing.new
+      [second, environment]
+    else
+      reduced_first, reduced_environment = first.reduce(environment)
+      [Sequence.new(reduced_first, second), reduced_environment]
+    end
+  end
+
+  def reducible?
+    true
+  end
+
+  def to_s
+    "#{first}; #{second}"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
+
 class Machine < Struct.new(:statement, :environment)
 
   def step
     # puts "DEBUG: #{statement}, #{environment}, #{statement.class}"
-    if statement.instance_of?(Assign) or statement.instance_of?(If)
+    if statement.instance_of?(Assign) or
+      statement.instance_of?(If) or
+      statement.instance_of?(Sequence)
       self.statement, self.environment = statement.reduce(environment)
     else
       self.statement = statement.reduce(environment)
