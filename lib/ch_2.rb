@@ -216,13 +216,33 @@ class Sequence < Struct.new(:first, :second)
   end
 end
 
+class While < Struct.new(:condition, :body)
+
+  def reduce(environment)
+    [If.new(condition, Sequence.new(body, self), DoNothing.new), environment]
+  end
+
+  def reducible?
+    true
+  end
+
+  def to_s
+    "while (#{condition}) { #{body} }"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
+
 class Machine < Struct.new(:statement, :environment)
 
   def step
     # puts "DEBUG: #{statement}, #{environment}, #{statement.class}"
     if statement.instance_of?(Assign) or
       statement.instance_of?(If) or
-      statement.instance_of?(Sequence)
+      statement.instance_of?(Sequence) or
+      statement.instance_of?(While)
       self.statement, self.environment = statement.reduce(environment)
     else
       self.statement = statement.reduce(environment)
