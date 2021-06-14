@@ -40,7 +40,7 @@ class Variable < Struct.new(:name)
   end
 end
 
-class Add < Struct(:left, :right)
+class Add < Struct.new(:left, :right)
   def evaluate(environment)
     Number.new(left.evaluate(environment).value + right.evaluate(environment).value)
   end
@@ -54,7 +54,7 @@ class Add < Struct(:left, :right)
   end
 end
 
-class Multiply < Struct(:left, :right)
+class Multiply < Struct.new(:left, :right)
   def evaluate(environment)
     Number.new(left.evaluate(environment).value * right.evaluate(environment).value)
   end
@@ -68,7 +68,7 @@ class Multiply < Struct(:left, :right)
   end
 end
 
-class LessThan < Struct(:left, :right)
+class LessThan < Struct.new(:left, :right)
   def evaluate(environment)
     Boolean.new(left.evaluate(environment).value < right.evaluate(environment).value)
   end
