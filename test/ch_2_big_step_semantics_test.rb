@@ -12,10 +12,11 @@ class Ch2BigStepSemanticsTest < Test::Unit::TestCase
   end
 
   def test_less_than
-    assert LessThan.new(
+    statement = LessThan.new(
       Add.new(Variable.new(:x), Number.new(2)),
-      Variable.new(:y)
-    ).evaluate({ x: Number.new(2), y: Number.new(5) }).to_s == "true"
+      Variable.new(:y))
+
+    assert statement.evaluate({ x: Number.new(2), y: Number.new(5) }).to_s == "true"
   end
 
   def test_sequence
