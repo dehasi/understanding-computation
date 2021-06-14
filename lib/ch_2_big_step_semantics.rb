@@ -81,3 +81,52 @@ class LessThan < Struct.new(:left, :right)
     "\"#{self}\""
   end
 end
+
+class Assign < Struct.new(:name, :expression)
+
+  def evaluate(environment)
+    environment.merge({ name => expression.evaluate(environment) })
+  end
+
+  def to_s
+    "#{name} = #{expression}"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
+
+class DoNothing
+  def evaluate(environment)
+    environment
+  end
+
+  def to_s
+    "do-nothing"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
+
+class If < Struct.new(:condition, :consequence, :alternative)
+
+  def evaluate(environment)
+    case condition.evaluate(environment)
+    when Boolean.new(true)
+      consequence.evaluate(environment)
+    when Boolean.new(false)
+      alternative.evaluate(environment)
+    end
+  end
+
+  def to_s
+    "if (#{condition}) { #{consequence} } else { #{alternative} }"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
