@@ -40,20 +40,44 @@ class Variable < Struct.new(:name)
   end
 end
 
-class Add
+class Add < Struct(:left, :right)
   def evaluate(environment)
     Number.new(left.evaluate(environment).value + right.evaluate(environment).value)
   end
-end
 
-class Multiply
-  def evaluate(environment)
-    Number.new(left.evaluate(environment).value * right.evaluate(environment).value)
+  def to_s
+    "#{left} + #{right}"
+  end
+
+  def inspect
+    "\"#{self}\""
   end
 end
 
-class LessThab
+class Multiply < Struct(:left, :right)
+  def evaluate(environment)
+    Number.new(left.evaluate(environment).value * right.evaluate(environment).value)
+  end
+
+  def to_s
+    "#{left} * #{right}"
+  end
+
+  def inspect
+    "\"#{self}\""
+  end
+end
+
+class LessThan < Struct(:left, :right)
   def evaluate(environment)
     Boolean.new(left.evaluate(environment).value < right.evaluate(environment).value)
+  end
+
+  def to_s
+    "#{left} < #{right}"
+  end
+
+  def inspect
+    "\"#{self}\""
   end
 end
