@@ -1,7 +1,7 @@
 require 'test/unit'
-require 'ch_2'
+require 'ch_2_small_step_semantics'
 
-class Ch2Test < Test::Unit::TestCase
+class Ch2SmallStepSemanticsTest < Test::Unit::TestCase
 
   def test_number
     assert Number.new(42).value == 42
