@@ -133,5 +133,17 @@ end
 
 class Sequence < Struct.new(:first, :second)
   def evaluate(environment)
-    second.evaluate(first.evaluate(environment)) end
+    second.evaluate(first.evaluate(environment))
+  end
+end
+
+class While < Struct.new(:condition, :body)
+  def evaluate(environment)
+    case condition.evaluate(environment)
+    when Boolean.new(true)
+      evaluate(body.evaluate(environment))
+    when Boolean.new(false)
+      environment
+    end
+  end
 end
